@@ -1,30 +1,38 @@
 {% extends 'base.html' %}
 {% block title %}Post Detail{% endblock %}
 {% block content %}
-<h3>{{ post.title }}</h3>
-<p class="text-muted">By {{ post.user.username }} | Views {{ post.views }}</p>
-<p>{{ post.content }}</p>
-<div class="mb-3">
-    <a href="{% url 'community:like_post' post.id %}" class="btn btn-outline-primary btn-sm">Like ({{ post.likes.count }})</a>
-    {% if post.user == user %}
-    <a href="{% url 'community:edit_post' post.id %}" class="btn btn-outline-secondary btn-sm">Edit</a>
-    <a href="{% url 'community:delete_post' post.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
-    {% endif %}
-</div>
-<h5>Comments</h5>
-<ul class="list-group mb-3">
-    {% for comment in comments %}
-    <li class="list-group-item">
-        <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
-    </li>
-    {% empty %}
-    <li class="list-group-item">No comments yet.</li>
-    {% endfor %}
-</ul>
-<form method="post" action="{% url 'community:add_comment' post.id %}">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <button type="submit" class="btn btn-primary">Comment</button>
-</form>
-{% endblock %}
+<section class="max-w-4xl mx-auto px-4 py-10">
+    <div class="bg-white border border-cream-dk rounded-xl p-6 mb-6">
+        <h1 class="font-display text-3xl font-bold text-navy">{{ post.title }}</h1>
+        <p class="text-xs text-slate mt-1">By {{ post.user.username }} | Views {{ post.views }}</p>
+        <p class="text-body mt-4">{{ post.content }}</p>
+        <div class="flex flex-wrap gap-2 mt-5">
+            <a href="{% url 'community:like_post' post.id %}" class="border border-cream-dk text-navy px-3 py-1.5 rounded-lg text-sm hover:bg-cream">Like ({{ post.likes.count }})</a>
+            {% if post.user == user %}
+            <a href="{% url 'community:edit_post' post.id %}" class="border border-cream-dk text-navy px-3 py-1.5 rounded-lg text-sm hover:bg-cream">Edit</a>
+            <a href="{% url 'community:delete_post' post.id %}" class="border border-red-300 text-red-600 px-3 py-1.5 rounded-lg text-sm hover:bg-red-50">Delete</a>
+            {% endif %}
+        </div>
+    </div>
 
+    <h2 class="font-display text-xl font-semibold text-navy mb-3">Comments</h2>
+    <div class="bg-white border border-cream-dk rounded-xl divide-y divide-cream-dk mb-6">
+        {% for comment in comments %}
+        <div class="px-5 py-4 text-sm text-navy"><strong>{{ comment.user.username }}:</strong> {{ comment.content }}</div>
+        {% empty %}
+        <div class="px-5 py-4 text-slate">No comments yet.</div>
+        {% endfor %}
+    </div>
+
+    <form method="post" action="{% url 'community:add_comment' post.id %}" class="bg-white border border-cream-dk rounded-xl p-6 space-y-4">
+        {% csrf_token %}
+        {% for field in comment_form %}
+        <div>
+            <label class="block text-sm font-semibold text-navy mb-1">{{ field.label }}</label>
+            {{ field }}
+        </div>
+        {% endfor %}
+        <button type="submit" class="bg-gold text-navy font-semibold px-4 py-2 rounded-lg hover:bg-gold-lt">Comment</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,28 +1,178 @@
 {% extends 'base.html' %}
-{% block title %}My Profile{% endblock %}
-{% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>{{ user.get_full_name|default:user.username }}</h2>
-    <a href="{% url 'accounts:edit_profile' %}" class="btn btn-outline-primary">Edit Profile</a>
-</div>
-<p class="text-muted">{{ user.university }} | {{ user.major }}</p>
-<p>{{ user.bio }}</p>
-<div class="mb-3">
-    <strong>InCoScore:</strong> {{ user.incoscore }}
-</div>
-<div class="mb-3">
-    <a href="{% url 'accounts:add_achievement' %}" class="btn btn-primary">Add Achievement</a>
-</div>
-<h4>Achievements</h4>
-<ul class="list-group">
-    {% for item in achievements %}
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span>{{ item.title }} ({{ item.get_achievement_type_display }})</span>
-        <a href="{% url 'accounts:delete_achievement' item.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
-    </li>
-    {% empty %}
-    <li class="list-group-item">No achievements yet.</li>
-    {% endfor %}
-</ul>
-{% endblock %}
+{% load static %}
 
+{% block title %}{{ user.get_full_name|default:user.username }} — IvyNetwork{% endblock %}
+
+{% block content %}
+<div class="bg-cream min-h-[calc(100vh-64px)]"
+     style="background-image:
+       linear-gradient(rgba(201,168,76,.02) 1px, transparent 1px),
+       linear-gradient(90deg, rgba(201,168,76,.02) 1px, transparent 1px);
+     background-size: 48px 48px;">
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="grid lg:grid-cols-3 gap-8 items-start">
+
+      <!-- ── LEFT: PROFILE CARD ── -->
+      <div class="lg:col-span-1 space-y-5">
+
+        <!-- Avatar + identity -->
+        <div class="bg-white rounded-xl border border-cream-dk shadow-[0_4px_20px_rgba(13,27,42,.06)] overflow-hidden">
+
+          <!-- Navy banner -->
+          <div class="h-20"
+          <div class="h-20"
+               style="background-image: linear-gradient(135deg, #0D1B2A 0%, #152337 100%);">
+            <div class="absolute inset-0 pointer-events-none"
+                 style="background-image:
+                   linear-gradient(rgba(201,168,76,.04) 1px, transparent 1px),
+                   linear-gradient(90deg, rgba(201,168,76,.04) 1px, transparent 1px);
+                 background-size: 24px 24px;"></div>
+          </div>
+
+          <div class="px-6 pb-6">
+            <!-- Avatar -->
+            {% if user.profile_picture %}
+              <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}"
+                   class="w-16 h-16 rounded-full object-cover border-4 border-white -mt-8 mb-4 shadow-md">
+            {% else %}
+              <div class="w-16 h-16 rounded-full bg-gold flex items-center justify-center
+                          text-navy font-display font-bold text-2xl border-4 border-white
+                          -mt-8 mb-4 shadow-md">
+                {{ user.first_name|first|default:user.username|first|upper }}
+              </div>
+            {% endif %}
+
+            <h1 class="font-display font-bold text-navy text-xl leading-tight">
+              {{ user.get_full_name|default:user.username }}
+            </h1>
+
+            {% if user.university or user.major %}
+              <p class="text-slate text-sm mt-1">
+                {% if user.university %}{{ user.university }}{% endif %}
+                {% if user.university and user.major %}
+                  <span class="mx-1 opacity-40">·</span>
+                {% endif %}
+                {% if user.major %}{{ user.major }}{% endif %}
+              </p>
+            {% endif %}
+
+            {% if user.bio %}
+              <p class="text-body text-sm font-light leading-relaxed mt-3">{{ user.bio }}</p>
+            {% endif %}
+
+            <a href="{% url 'accounts:edit_profile' %}"
+               class="mt-4 w-full inline-flex items-center justify-center gap-2 text-sm font-semibold
+                      text-navy border border-gold/40 hover:border-gold hover:bg-gold/5
+                      py-2.5 rounded-lg transition-all">
+              <i class="fas fa-pen text-gold text-xs"></i> Edit Profile
+            </a>
+          </div>
+        </div>
+
+        <!-- InCoScore™ -->
+        <div class="rounded-xl border border-gold/30 overflow-hidden"
+             style="background: linear-gradient(135deg, rgba(201,168,76,.1) 0%, rgba(201,168,76,.03) 100%)">
+          <div class="px-6 py-5 flex items-center justify-between">
+            <div>
+              <p class="text-gold text-[11px] font-semibold tracking-[2px] uppercase mb-1">InCoScore™</p>
+              <p class="font-display font-bold text-navy text-4xl leading-none">
+                {{ user.incoscore|default:"0" }}
+              </p>
+            </div>
+            <div class="w-14 h-14 rounded-full bg-gold/15 flex items-center justify-center">
+              <i class="fas fa-trophy text-gold text-xl"></i>
+            </div>
+          </div>
+          <div class="px-6 pb-4">
+            <a href="{% url 'ranking:leaderboard' %}"
+               class="text-[11px] text-gold font-semibold hover:underline underline-offset-2 flex items-center gap-1">
+              View leaderboard <i class="fas fa-arrow-right text-[9px]"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── RIGHT: ACHIEVEMENTS ── -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Header -->
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="block w-5 h-px bg-gold opacity-70"></span>
+            <span class="text-gold text-[11px] font-semibold tracking-[2.5px] uppercase">Portfolio</span>
+          </div>
+          <h2 class="font-display font-bold text-navy text-3xl">Achievements</h2>
+        </div>
+
+        <!-- Achievements card -->
+        <div class="bg-white rounded-xl border border-cream-dk shadow-[0_4px_20px_rgba(13,27,42,.06)] overflow-hidden">
+
+          <div class="flex items-center justify-between gap-4 px-6 py-4 border-b border-cream-dk">
+            <div class="flex items-center gap-2.5">
+              <i class="fas fa-medal text-gold text-sm"></i>
+              <h3 class="font-display font-semibold text-navy text-lg">Your Achievements</h3>
+            </div>
+            <a href="{% url 'accounts:add_achievement' %}"
+               class="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-lt text-navy
+                      text-xs font-semibold px-4 py-2 rounded-lg transition-all
+                      hover:-translate-y-0.5 hover:shadow-[0_6px_16px_rgba(201,168,76,.3)]">
+              <i class="fas fa-plus text-[10px]"></i> Add Achievement
+            </a>
+          </div>
+
+          {% if achievements %}
+            <div class="divide-y divide-cream-dk">
+              {% for item in achievements %}
+                <div class="flex items-center justify-between gap-4 px-6 py-4 hover:bg-cream transition-colors group">
+                  <div class="flex items-center gap-3.5 min-w-0">
+                    <div class="w-9 h-9 rounded-lg bg-gold/10 border border-gold/20
+                                flex items-center justify-center flex-shrink-0">
+                      <i class="fas fa-award text-gold text-sm"></i>
+                    </div>
+                    <div class="min-w-0">
+                      <p class="text-navy text-sm font-semibold truncate group-hover:text-gold transition-colors">
+                        {{ item.title }}
+                      </p>
+                      <span class="inline-block mt-0.5 text-[10px] font-semibold tracking-wide
+                                   px-2 py-0.5 rounded-full bg-navy/5 text-slate border border-navy/10">
+                        {{ item.get_achievement_type_display }}
+                      </span>
+                    </div>
+                  </div>
+                  <a href="{% url 'accounts:delete_achievement' item.id %}"
+                     class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center
+                            text-slate hover:text-red-500 hover:bg-red-50 border border-transparent
+                            hover:border-red-100 transition-all"
+                     onclick="return confirm('Delete this achievement?')">
+                    <i class="fas fa-trash-alt text-xs"></i>
+                  </a>
+                </div>
+              {% endfor %}
+            </div>
+
+          {% else %}
+            <div class="px-6 py-14 text-center">
+              <div class="w-14 h-14 rounded-full bg-cream border border-cream-dk
+                          flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-medal text-slate/40 text-xl"></i>
+              </div>
+              <p class="text-navy font-semibold text-sm mb-1">No achievements yet</p>
+              <p class="text-slate text-xs mb-5">Start building your profile by adding your first achievement.</p>
+              <a href="{% url 'accounts:add_achievement' %}"
+                 class="inline-flex items-center gap-2 bg-gold hover:bg-gold-lt text-navy
+                        text-sm font-semibold px-6 py-2.5 rounded-lg transition-all
+                        hover:-translate-y-0.5 hover:shadow-[0_6px_16px_rgba(201,168,76,.3)]">
+                <i class="fas fa-plus text-xs"></i> Add Your First Achievement
+              </a>
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

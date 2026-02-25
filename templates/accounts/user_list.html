@@ -1,19 +1,21 @@
 {% extends 'base.html' %}
 {% block title %}Students{% endblock %}
 {% block content %}
-<h3>Students</h3>
-<form method="get" class="mb-3">
-    <input type="text" name="search" value="{{ search_query }}" class="form-control" placeholder="Search users">
-</form>
-<div class="list-group">
-    {% for person in users %}
-    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{% url 'accounts:user_detail' person.username %}">
-        <span>{{ person.get_full_name|default:person.username }} - {{ person.university }}</span>
-        <span class="badge bg-warning text-dark">InCoScore {{ person.incoscore }}</span>
-    </a>
-    {% empty %}
-    <div class="list-group-item">No users found.</div>
-    {% endfor %}
-</div>
+<section class="max-w-5xl mx-auto px-4 py-10">
+    <h1 class="font-display text-3xl font-bold text-navy mb-5">Students</h1>
+    <form method="get" class="mb-5">
+        <input type="text" name="search" value="{{ search_query }}" placeholder="Search users"
+               class="w-full bg-cream border border-cream-dk rounded-lg px-4 py-2.5 text-sm text-navy focus:outline-none focus:ring-2 focus:ring-gold/30">
+    </form>
+    <div class="bg-white border border-cream-dk rounded-xl divide-y divide-cream-dk">
+        {% for person in users %}
+        <a class="px-5 py-4 flex items-center justify-between gap-4 hover:bg-cream transition-colors" href="{% url 'accounts:user_detail' person.username %}">
+            <span class="text-sm text-navy">{{ person.get_full_name|default:person.username }} - {{ person.university }}</span>
+            <span class="text-xs font-semibold bg-gold/20 text-navy px-3 py-1 rounded-full">InCoScore {{ person.incoscore }}</span>
+        </a>
+        {% empty %}
+        <div class="px-5 py-4 text-slate">No users found.</div>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}
-

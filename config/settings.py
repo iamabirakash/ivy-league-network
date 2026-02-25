@@ -194,4 +194,5 @@ EMAIL_BACKEND = os.getenv(
     "EMAIL_BACKEND",
     "django.core.mail.backends.console.EmailBackend",
 )
+ENABLE_ZERO_SHOT_CLASSIFIER = os.getenv("ENABLE_ZERO_SHOT_CLASSIFIER", "false").lower() == "true"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

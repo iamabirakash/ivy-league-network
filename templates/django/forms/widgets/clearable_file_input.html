@@ -1,0 +1,19 @@
+{% if widget.is_initial %}
+  <div class="mt-1 mb-3 rounded-lg border border-cream-dk bg-cream px-3 py-2 text-xs text-slate">
+    <span class="font-semibold text-navy">{{ widget.initial_text }}:</span>
+    <a href="{{ widget.value.url }}" class="text-gold hover:underline break-all" target="_blank" rel="noopener">
+      {{ widget.value }}
+    </a>
+    {% if not widget.required %}
+      <label for="{{ widget.checkbox_id }}" class="ml-3 inline-flex items-center gap-1 text-red-600 font-medium">
+        <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}"
+               class="h-3.5 w-3.5 rounded border-cream-dk text-red-600 focus:ring-red-200">
+        {{ widget.clear_checkbox_label }}
+      </label>
+    {% endif %}
+  </div>
+{% endif %}
+
+<div class="text-xs text-slate mb-1">{{ widget.input_text }}:</div>
+<input type="{{ widget.type }}" name="{{ widget.name }}"
+  {% include "django/forms/widgets/attrs.html" %}>

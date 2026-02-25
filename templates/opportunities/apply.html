@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Apply | {{ opportunity.title }}{% endblock %}
+{% block content %}
+<section class="max-w-3xl mx-auto px-4 py-10">
+  <a class="text-sm text-slate hover:text-navy" href="{% url 'opportunities:detail' opportunity.id %}">Back to opportunity</a>
+  <h1 class="text-2xl font-semibold text-navy mt-3">{{ opportunity.title }}</h1>
+  <p class="text-sm text-body mt-1">{{ opportunity.university.name }} | Deadline: {{ opportunity.deadline|date:"M d, Y" }}</p>
+
+  <div class="mt-6 bg-white border border-cream-dk rounded-lg p-5">
+    <h2 class="text-lg font-semibold mb-4">Auto-Application Submission</h2>
+    <form method="post" enctype="multipart/form-data" class="space-y-4">
+      {% csrf_token %}
+      <div>
+        <label class="block text-sm font-medium mb-1">Resume</label>
+        {{ form.resume_used }}
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">Cover Letter (Optional)</label>
+        {{ form.cover_letter }}
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">Application Data / Notes</label>
+        {{ form.submitted_data }}
+      </div>
+      <button type="submit" class="bg-gold text-navy px-4 py-2 rounded-md font-semibold hover:bg-gold-lt">
+        Submit Application
+      </button>
+    </form>
+  </div>
+</section>
+{% endblock %}

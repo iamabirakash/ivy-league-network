@@ -1,150 +1,292 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Home - Ivy Opportunity Network{% endblock %}
+{% block title %}Ivy Opportunity Network | Unlock Your Potential{% endblock %}
 
 {% block content %}
-<div class="row align-items-center min-vh-75">
-    <div class="col-lg-6">
-        <h1 class="display-4 fw-bold mb-4">
-            Discover Ivy League <span class="text-primary">Opportunities</span>
+
+<!-- ── HERO ── -->
+<section class="relative bg-navy min-h-screen flex items-center overflow-hidden py-20">
+
+  <!-- Grid texture -->
+  <div class="absolute inset-0 pointer-events-none"
+       style="background-image:
+         linear-gradient(rgba(201,168,76,.03) 1px, transparent 1px),
+         linear-gradient(90deg, rgba(201,168,76,.03) 1px, transparent 1px);
+       background-size: 60px 60px;">
+  </div>
+
+  <!-- Glow blobs -->
+  <div class="absolute -top-48 -right-48 w-[700px] h-[700px] rounded-full pointer-events-none"
+       style="background: radial-gradient(circle, rgba(201,168,76,.08) 0%, transparent 70%)"></div>
+  <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full pointer-events-none"
+       style="background: radial-gradient(circle, rgba(201,168,76,.05) 0%, transparent 70%)"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- ── Left: Copy ── -->
+      <div>
+
+        <!-- Eyebrow -->
+        <div class="hero-child flex items-center gap-2 mb-7" style="animation-delay:.1s">
+          <span class="block w-6 h-px bg-gold"></span>
+          <span class="text-gold text-[11px] font-semibold tracking-[2.5px] uppercase">
+            AI-Powered Application Tracking
+          </span>
+        </div>
+
+        <!-- Heading -->
+        <h1 class="hero-child font-display font-bold text-white leading-tight mb-7"
+            style="font-size:clamp(48px,6vw,80px); letter-spacing:-.5px; animation-delay:.25s">
+          Bridge the gap to<br>
+          <em class="text-gold" style="font-style:italic">Ivy League</em> excellence
         </h1>
-        <p class="lead mb-4">
-            Never miss a workshop, hackathon, research internship, or scholarship from top universities.
-            Personalized opportunities, automated applications, and a thriving academic community.
+
+        <!-- Sub-heading -->
+        <p class="hero-child text-slate text-[17px] font-light leading-relaxed max-w-lg mb-11"
+           style="animation-delay:.4s">
+          Stop searching through endless tabs. Our AI scans elite university portals to surface
+          personalized research opportunities, hackathons, and scholarships — delivered directly
+          to your dashboard.
         </p>
-        
-        {% if not user.is_authenticated %}
-            <div class="d-grid gap-2 d-md-flex">
-                <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg px-4">
-                    Get Started Free
-                </a>
-                <a href="{% url 'opportunities:list' %}" class="btn btn-outline-primary btn-lg px-4">
-                    Browse Opportunities
-                </a>
-            </div>
-        {% else %}
-            <div class="d-grid gap-2 d-md-flex">
-                <a href="{% url 'opportunities:dashboard' %}" class="btn btn-primary btn-lg px-4">
-                    Go to Dashboard
-                </a>
-                <a href="{% url 'opportunities:list' %}" class="btn btn-outline-primary btn-lg px-4">
-                    Browse Opportunities
-                </a>
-            </div>
-        {% endif %}
-        
-        <div class="row mt-5">
-            <div class="col-4">
-                <div class="text-center">
-                    <h3 class="text-primary">8+</h3>
-                    <p class="text-muted">Ivy League Universities</p>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="text-center">
-                    <h3 class="text-primary">1000+</h3>
-                    <p class="text-muted">Opportunities</p>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="text-center">
-                    <h3 class="text-primary">500+</h3>
-                    <p class="text-muted">Active Students</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-lg-6">
-        <img src="{% static 'images/hero.svg' %}" alt="Hero" class="img-fluid">
-    </div>
-</div>
 
-<!-- Features -->
-<div class="row mt-5 pt-5">
-    <h2 class="text-center mb-5">Why Choose IvyNetwork?</h2>
-    
-    <div class="col-md-4 mb-4">
-        <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body text-center">
-                <i class="fas fa-robot fa-3x text-primary mb-3"></i>
-                <h5>AI-Powered Discovery</h5>
-                <p class="text-muted">Our AI monitors 8+ Ivy League websites in real-time, finding opportunities matching your interests.</p>
-            </div>
+        <!-- CTA Buttons -->
+        <div class="hero-child flex flex-wrap gap-3 items-center" style="animation-delay:.55s">
+          {% if not user.is_authenticated %}
+            <a href="{% url 'accounts:register' %}"
+               class="inline-flex items-center gap-2.5 bg-gold hover:bg-gold-lt text-navy
+                      text-sm font-semibold px-8 py-4 rounded-md transition-all
+                      hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(201,168,76,.25)]">
+              Get Started — It's Free
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a href="{% url 'opportunities:list' %}"
+               class="inline-flex items-center gap-2.5 bg-transparent text-cream text-sm font-medium
+                      px-7 py-4 rounded-md border border-white/15 hover:border-white/40
+                      hover:bg-white/5 transition-all hover:-translate-y-0.5">
+              Browse Opportunities
+            </a>
+          {% else %}
+            <a href="{% url 'opportunities:dashboard' %}"
+               class="inline-flex items-center gap-2.5 bg-gold hover:bg-gold-lt text-navy
+                      text-sm font-semibold px-8 py-4 rounded-md transition-all
+                      hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(201,168,76,.25)]">
+              View My Dashboard
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          {% endif %}
         </div>
-    </div>
-    
-    <div class="col-md-4 mb-4">
-        <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body text-center">
-                <i class="fas fa-rocket fa-3x text-primary mb-3"></i>
-                <h5>Auto-Application</h5>
-                <p class="text-muted">Apply with one click. Our system auto-fills forms and submits your applications.</p>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-4 mb-4">
-        <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body text-center">
-                <i class="fas fa-trophy fa-3x text-primary mb-3"></i>
-                <h5>InCoScore Ranking</h5>
-                <p class="text-muted">Get ranked against peers with our intelligent competency scoring algorithm.</p>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- How It Works -->
-<div class="row mt-5 pt-5">
-    <h2 class="text-center mb-5">How It Works</h2>
-    
-    <div class="col-md-3">
-        <div class="text-center">
-            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                 style="width: 50px; height: 50px;">1</div>
-            <h5>Create Profile</h5>
-            <p class="text-muted">Add your skills, interests, and achievements</p>
+        <!-- Stats row -->
+        <div class="hero-child mt-14 pt-10 border-t border-white/10 flex gap-12 flex-wrap"
+             style="animation-delay:.7s">
+          <div>
+            <div class="font-display font-semibold text-white text-3xl leading-none mb-1">8+</div>
+            <div class="text-slate text-[10px] font-semibold tracking-[2px] uppercase">Universities</div>
+          </div>
+          <div>
+            <div class="font-display font-semibold text-white text-3xl leading-none mb-1">1,200+</div>
+            <div class="text-slate text-[10px] font-semibold tracking-[2px] uppercase">Live Posts</div>
+          </div>
+          <div>
+            <div class="font-display font-semibold text-white text-3xl leading-none mb-1">98%</div>
+            <div class="text-slate text-[10px] font-semibold tracking-[2px] uppercase">Match Rate</div>
+          </div>
         </div>
-    </div>
-    
-    <div class="col-md-3">
-        <div class="text-center">
-            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                 style="width: 50px; height: 50px;">2</div>
-            <h5>Get Matched</h5>
-            <p class="text-muted">Receive personalized opportunity recommendations</p>
-        </div>
-    </div>
-    
-    <div class="col-md-3">
-        <div class="text-center">
-            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                 style="width: 50px; height: 50px;">3</div>
-            <h5>Apply Automatically</h5>
-            <p class="text-muted">Apply with one click to multiple opportunities</p>
-        </div>
-    </div>
-    
-    <div class="col-md-3">
-        <div class="text-center">
-            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                 style="width: 50px; height: 50px;">4</div>
-            <h5>Connect & Grow</h5>
-            <p class="text-muted">Join community, share achievements, climb rankings</p>
-        </div>
-    </div>
-</div>
 
-<!-- CTA -->
-<div class="row mt-5 pt-5">
-    <div class="col-12">
-        <div class="bg-primary text-white rounded-4 p-5 text-center">
-            <h3 class="mb-4">Ready to accelerate your academic journey?</h3>
-            <p class="lead mb-4">Join hundreds of students already discovering opportunities.</p>
-            <a href="{% url 'accounts:register' %}" class="btn btn-light btn-lg">Sign Up Now →</a>
+      </div>
+
+      <!-- ── Right: Dashboard preview card ── -->
+      <div class="float-anim">
+        <div class="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-7 backdrop-blur-md">
+
+          <div class="flex justify-between items-center mb-6">
+            <span class="text-white text-sm font-semibold tracking-wide">Your Dashboard</span>
+            <span class="inline-flex items-center gap-1.5 text-emerald-400 text-[10px] font-semibold
+                         tracking-widest uppercase bg-emerald-400/10 px-2.5 py-1 rounded-full">
+              <span class="live-dot w-1.5 h-1.5 rounded-full bg-emerald-400 block"></span>
+              Live
+            </span>
+          </div>
+
+          <div class="divide-y divide-white/[0.06]">
+
+            <div class="flex items-center gap-3.5 py-3">
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center text-base flex-shrink-0 bg-gold/[0.12]">🔬</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-white text-[13px] font-medium truncate">Harvard NLP Research Fellowship</div>
+                <div class="text-slate text-[11px]">Posted 2 hours ago · Deadline Mar 15</div>
+              </div>
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-400/10 text-emerald-400 flex-shrink-0">New</span>
+            </div>
+
+            <div class="flex items-center gap-3.5 py-3">
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center text-base flex-shrink-0 bg-sky-400/[0.12]">💡</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-white text-[13px] font-medium truncate">MIT Innovation Hackathon 2025</div>
+                <div class="text-slate text-[11px]">Posted 5 hours ago · $10k Prize</div>
+              </div>
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-sky-400/10 text-sky-400 flex-shrink-0">Match</span>
+            </div>
+
+            <div class="flex items-center gap-3.5 py-3">
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center text-base flex-shrink-0 bg-gold/[0.12]">🎓</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-white text-[13px] font-medium truncate">Yale Merit Scholarship Program</div>
+                <div class="text-slate text-[11px]">Posted yesterday · Full Tuition</div>
+              </div>
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-gold/10 text-gold flex-shrink-0">Top</span>
+            </div>
+
+            <div class="flex items-center gap-3.5 py-3">
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center text-base flex-shrink-0 bg-violet-400/[0.12]">🚀</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-white text-[13px] font-medium truncate">Stanford CS Summer Internship</div>
+                <div class="text-slate text-[11px]">Posted 2 days ago · Paid</div>
+              </div>
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-violet-400/10 text-violet-400 flex-shrink-0">Hot</span>
+            </div>
+
+          </div>
         </div>
+      </div>
+
     </div>
-</div>
+  </div>
+</section>
+
+
+<!-- ── FEATURES ── -->
+<section class="bg-cream py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="text-center mb-16">
+      <div class="text-gold text-[11px] font-semibold tracking-[2.5px] uppercase mb-4">Capabilities</div>
+      <div class="flex items-center justify-center gap-4 mb-5">
+        <div class="w-10 h-px bg-gold opacity-50"></div>
+        <div class="w-1.5 h-1.5 bg-gold rotate-45 opacity-70"></div>
+        <div class="w-10 h-px bg-gold opacity-50"></div>
+      </div>
+      <h2 class="font-display font-bold text-navy"
+          style="font-size:clamp(32px,4vw,48px); line-height:1.2">
+        Built for high-achievers
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <!-- Card: Intelligent Scraping -->
+      <div class="fade-up" style="animation-delay:.1s">
+        <div class="feature-bar relative bg-white rounded-xl p-9 h-full border border-cream-dk
+                    transition-all duration-300 hover:-translate-y-1.5
+                    hover:shadow-[0_20px_50px_rgba(13,27,42,.1)] overflow-hidden">
+          <div class="w-[52px] h-[52px] rounded-xl bg-cream border border-cream-dk
+                      flex items-center justify-center mb-6 text-gold">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-navy text-xl mb-3">Intelligent Scraping</h3>
+          <p class="text-body text-sm font-light leading-[1.75]">
+            Real-time monitoring of departmental blogs and hidden portal updates you simply can't
+            find on Google — surfaced the moment they're posted.
+          </p>
+        </div>
+      </div>
+
+      <!-- Card: Auto-Fill Engine -->
+      <div class="fade-up" style="animation-delay:.25s">
+        <div class="feature-bar relative bg-white rounded-xl p-9 h-full border border-cream-dk
+                    transition-all duration-300 hover:-translate-y-1.5
+                    hover:shadow-[0_20px_50px_rgba(13,27,42,.1)] overflow-hidden">
+          <div class="w-[52px] h-[52px] rounded-xl bg-cream border border-cream-dk
+                      flex items-center justify-center mb-6 text-gold">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8">
+              <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+              <polyline points="13 2 13 9 20 9"/>
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-navy text-xl mb-3">Auto-Fill Engine</h3>
+          <p class="text-body text-sm font-light leading-[1.75]">
+            Stop re-entering your GPA for the hundredth time. One-click application maps your
+            profile to any form's fields — instantly and accurately.
+          </p>
+        </div>
+      </div>
+
+      <!-- Card: InCoScore -->
+      <div class="fade-up" style="animation-delay:.4s">
+        <div class="feature-bar relative bg-white rounded-xl p-9 h-full border border-cream-dk
+                    transition-all duration-300 hover:-translate-y-1.5
+                    hover:shadow-[0_20px_50px_rgba(13,27,42,.1)] overflow-hidden">
+          <div class="w-[52px] h-[52px] rounded-xl bg-cream border border-cream-dk
+                      flex items-center justify-center mb-6 text-gold">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-navy text-xl mb-3">InCoScore™</h3>
+          <p class="text-body text-sm font-light leading-[1.75]">
+            Understand your competitive standing with our proprietary ranking algorithm, calibrated
+            from years of Ivy League admissions data and outcomes.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ── CTA ── -->
+<section class="relative bg-navy py-20 overflow-hidden">
+
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div class="w-[600px] h-72"
+         style="background: radial-gradient(ellipse, rgba(201,168,76,.10) 0%, transparent 70%)">
+    </div>
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+    <div class="text-gold text-[11px] font-semibold tracking-[2.5px] uppercase mb-5">
+      Your Next Move
+    </div>
+
+    <h2 class="font-display font-bold text-white mb-4"
+        style="font-size:clamp(32px,4vw,52px); line-height:1.15">
+      Your opportunity is<br>
+      <em class="text-gold" style="font-style:italic">already waiting</em>
+    </h2>
+
+    <p class="text-slate text-base font-light mb-10">
+      The next research fellowship, hackathon, or scholarship<br class="hidden sm:block">
+      at Harvard, Stanford, or MIT won't wait for you.
+    </p>
+
+    <a href="{% url 'accounts:register' %}"
+       class="inline-flex items-center gap-3 bg-gold hover:bg-gold-lt text-navy font-semibold
+              text-[15px] px-10 py-[18px] rounded-md transition-all hover:-translate-y-0.5
+              hover:shadow-[0_12px_32px_rgba(201,168,76,.3)]">
+      Join the Network
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+
+  </div>
+</section>
+
 {% endblock %}

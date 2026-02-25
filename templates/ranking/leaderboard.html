@@ -1,31 +1,35 @@
 {% extends 'base.html' %}
 {% block title %}Leaderboard{% endblock %}
 {% block content %}
-<h3 class="mb-3">InCoScore Leaderboard</h3>
-<form method="get" class="mb-3">
-    <input type="text" name="search" value="{{ request.GET.search }}" class="form-control" placeholder="Search students">
-</form>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>University</th>
-            <th>Score</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for person in users %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td><a href="{% url 'accounts:user_detail' person.username %}">{{ person.get_full_name|default:person.username }}</a></td>
-            <td>{{ person.university }}</td>
-            <td>{{ person.incoscore }}</td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="4">No users yet.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+<section class="max-w-6xl mx-auto px-4 py-10">
+    <h1 class="font-display text-3xl font-bold text-navy mb-5">InCoScore Leaderboard</h1>
+    <form method="get" class="mb-5">
+        <input type="text" name="search" value="{{ request.GET.search }}" placeholder="Search students"
+               class="w-full bg-cream border border-cream-dk rounded-lg px-4 py-2.5 text-sm text-navy focus:outline-none focus:ring-2 focus:ring-gold/30">
+    </form>
+    <div class="overflow-x-auto bg-white border border-cream-dk rounded-xl">
+        <table class="min-w-full text-sm">
+            <thead class="bg-cream text-navy">
+                <tr>
+                    <th class="text-left px-4 py-3 font-semibold">#</th>
+                    <th class="text-left px-4 py-3 font-semibold">Name</th>
+                    <th class="text-left px-4 py-3 font-semibold">University</th>
+                    <th class="text-left px-4 py-3 font-semibold">Score</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-cream-dk">
+                {% for person in users %}
+                <tr class="hover:bg-cream/60">
+                    <td class="px-4 py-3">{{ forloop.counter }}</td>
+                    <td class="px-4 py-3"><a class="text-navy hover:text-gold" href="{% url 'accounts:user_detail' person.username %}">{{ person.get_full_name|default:person.username }}</a></td>
+                    <td class="px-4 py-3">{{ person.university }}</td>
+                    <td class="px-4 py-3">{{ person.incoscore }}</td>
+                </tr>
+                {% empty %}
+                <tr><td class="px-4 py-3 text-slate" colspan="4">No users yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% endblock %}
-

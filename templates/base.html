@@ -1,145 +1,225 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Ivy Opportunity Network{% endblock %}</title>
-    
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              navy:       '#0D1B2A',
+              'navy-mid': '#152337',
+              cream:      '#F5F0E8',
+              'cream-dk': '#EDE7D9',
+              gold:       '#C9A84C',
+              'gold-lt':  '#E8C97A',
+              slate:      '#8A9BB0',
+              body:       '#4A5568',
+            },
+            fontFamily: {
+              display: ['"Playfair Display"', 'serif'],
+              sans:    ['"DM Sans"', 'sans-serif'],
+            },
+          }
+        }
+      }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
-    {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+      body { font-family: 'DM Sans', sans-serif; }
+      @keyframes float     { 0%,100%{ transform:translateY(0) }  50%{ transform:translateY(-12px) } }
+      @keyframes pulse-dot { 0%,100%{ opacity:1; transform:scale(1) } 50%{ opacity:.5; transform:scale(.8) } }
+      @keyframes fadeUp    { to{ opacity:1; transform:translateY(0) } }
+      .float-anim { animation: float 6s ease-in-out infinite; }
+      .live-dot   { animation: pulse-dot 2s infinite; }
+      .fade-up    { opacity:0; transform:translateY(30px); animation: fadeUp .7s ease forwards; }
+      .hero-child { opacity:0; animation: fadeUp .8s ease forwards; }
+      .feature-bar::before {
+        content:''; position:absolute; top:0; left:0; right:0; height:3px;
+        background: linear-gradient(90deg, #C9A84C, #E8C97A);
+        transform: scaleX(0); transform-origin: left; transition: transform .3s ease;
+      }
+      .feature-bar:hover::before { transform: scaleX(1); }
+    </style>
+
     {% block extra_css %}{% endblock %}
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <i class="fas fa-graduation-cap"></i> IvyNetwork
+<body class="bg-white text-navy overflow-x-hidden">
+
+  <!-- ── NAVBAR ── -->
+  <nav class="bg-navy fixed top-0 inset-x-0 z-50 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+
+        <!-- Brand -->
+        <a href="{% url 'home' %}"
+           class="flex items-center gap-2 text-white font-display font-semibold text-lg">
+          <i class="fas fa-graduation-cap text-gold"></i>
+          IvyNetwork
+        </a>
+
+        <!-- Centre links -->
+        <div class="hidden md:flex items-center gap-6">
+          <a href="{% url 'opportunities:list' %}"
+             class="text-slate hover:text-white text-sm font-medium transition-colors flex items-center gap-2">
+            <i class="fas fa-bolt text-gold text-xs"></i> Opportunities
+          </a>
+          <a href="{% url 'community:post_list' %}"
+             class="text-slate hover:text-white text-sm font-medium transition-colors flex items-center gap-2">
+            <i class="fas fa-users text-gold text-xs"></i> Community
+          </a>
+          <a href="{% url 'community:group_list' %}"
+             class="text-slate hover:text-white text-sm font-medium transition-colors flex items-center gap-2">
+            <i class="fas fa-layer-group text-gold text-xs"></i> Groups
+          </a>
+          <a href="{% url 'ranking:leaderboard' %}"
+             class="text-slate hover:text-white text-sm font-medium transition-colors flex items-center gap-2">
+            <i class="fas fa-trophy text-gold text-xs"></i> Rankings
+          </a>
+        </div>
+
+        <!-- Auth area -->
+        <div class="flex items-center gap-3">
+          {% if user.is_authenticated %}
+
+            <!-- Notifications -->
+            <div class="relative group">
+              <button class="relative text-slate hover:text-white transition-colors p-2">
+                <i class="fas fa-bell text-sm"></i>
+                {% if notifications_count %}
+                  <span class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-bold
+                               rounded-full min-w-[16px] h-4 flex items-center justify-center px-1">
+                    {{ notifications_count }}
+                  </span>
+                {% endif %}
+              </button>
+              <div class="hidden group-hover:block absolute right-0 mt-1 w-48
+                          bg-navy-mid border border-white/10 rounded-xl shadow-2xl py-1">
+                <a href="{% url 'notifications:all' %}"
+                   class="block px-4 py-2 text-sm text-slate hover:text-white hover:bg-white/5 transition-colors">
+                  View All Notifications
+                </a>
+              </div>
+            </div>
+
+            <!-- User dropdown -->
+            <div class="relative group">
+              <button class="flex items-center gap-2 text-slate hover:text-white transition-colors
+                             text-sm font-medium py-2 px-3 rounded-lg hover:bg-white/5">
+                <i class="fas fa-user text-gold text-xs"></i>
+                {{ user.username }}
+                {% if user.incoscore %}
+                  <span class="bg-gold/20 text-gold text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                    {{ user.incoscore }}
+                  </span>
+                {% endif %}
+              </button>
+              <div class="hidden group-hover:block absolute right-0 mt-1 w-52
+                          bg-navy-mid border border-white/10 rounded-xl shadow-2xl py-1">
+                <a href="{% url 'accounts:profile' %}"
+                   class="flex items-center gap-2 px-4 py-2 text-sm text-slate hover:text-white hover:bg-white/5 transition-colors">
+                  <i class="fas fa-id-card text-xs text-gold"></i> Profile
+                </a>
+                <a href="{% url 'opportunities:dashboard' %}"
+                   class="flex items-center gap-2 px-4 py-2 text-sm text-slate hover:text-white hover:bg-white/5 transition-colors">
+                  <i class="fas fa-tachometer-alt text-xs text-gold"></i> Dashboard
+                </a>
+                <a href="{% url 'accounts:edit_profile' %}"
+                   class="flex items-center gap-2 px-4 py-2 text-sm text-slate hover:text-white hover:bg-white/5 transition-colors">
+                  <i class="fas fa-cog text-xs text-gold"></i> Settings
+                </a>
+                <a href="{% url 'accounts:change_password' %}"
+                   class="flex items-center gap-2 px-4 py-2 text-sm text-slate hover:text-white hover:bg-white/5 transition-colors">
+                  <i class="fas fa-key text-xs text-gold"></i> Change Password
+                </a>
+                <hr class="my-1 border-white/10">
+                <form method="post" action="{% url 'accounts:logout' %}">
+                  {% csrf_token %}
+                  <button type="submit"
+                          class="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate
+                                 hover:text-white hover:bg-white/5 transition-colors text-left">
+                    <i class="fas fa-sign-out-alt text-xs text-gold"></i> Logout
+                  </button>
+                </form>
+              </div>
+            </div>
+
+          {% else %}
+            <a href="{% url 'accounts:login' %}"
+               class="text-slate hover:text-white text-sm font-medium transition-colors px-3 py-2">
+              Login
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'opportunities:list' %}">
-                            <i class="fas fa-bolt"></i> Opportunities
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'community:post_list' %}">
-                            <i class="fas fa-users"></i> Community
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'ranking:leaderboard' %}">
-                            <i class="fas fa-trophy"></i> Rankings
-                        </a>
-                    </li>
-                </ul>
-                
-                <ul class="navbar-nav">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" 
-                               role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-bell"></i>
-                                <span class="badge bg-danger">{{ notifications_count }}</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="{% url 'notifications:all' %}">View All</a></li>
-                            </ul>
-                        </li>
-                        
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" 
-                               role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user"></i> {{ user.username }}
-                                {% if user.incoscore %}
-                                    <span class="badge bg-warning text-dark">Score: {{ user.incoscore }}</span>
-                                {% endif %}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">
-                                    <i class="fas fa-id-card"></i> Profile
-                                </a></li>
-                                <li><a class="dropdown-item" href="{% url 'opportunities:dashboard' %}">
-                                    <i class="fas fa-tachometer-alt"></i> Dashboard
-                                </a></li>
-                                <li><a class="dropdown-item" href="{% url 'accounts:edit_profile' %}">
-                                    <i class="fas fa-cog"></i> Settings
-                                </a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <form method="post" action="{% url 'accounts:logout' %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="dropdown-item">
-                                            <i class="fas fa-sign-out-alt"></i> Logout
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-light text-primary ms-2" href="{% url 'accounts:register' %}">
-                                Sign Up
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
+            <a href="{% url 'accounts:register' %}"
+               class="bg-gold hover:bg-gold-lt text-navy text-sm font-semibold px-4 py-2
+                      rounded-md transition-all hover:-translate-y-px">
+              Sign Up
+            </a>
+          {% endif %}
         </div>
-    </nav>
 
-    <!-- Messages -->
-    {% if messages %}
-        <div class="container mt-3">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            {% endfor %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── FLASH MESSAGES ── -->
+  {% if messages %}
+    <div class="fixed top-20 inset-x-0 z-40 flex flex-col items-center gap-2 pointer-events-none">
+      {% for message in messages %}
+        <div class="pointer-events-auto max-w-xl w-full mx-4 bg-navy border border-gold/30
+                    text-cream text-sm px-5 py-3 rounded-xl shadow-xl flex items-center justify-between gap-4">
+          <span>{{ message }}</span>
+          <button onclick="this.parentElement.remove()"
+                  class="text-slate hover:text-white transition-colors flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5">
+              <path d="M18 6 6 18M6 6l12 12"/>
+            </svg>
+          </button>
         </div>
-    {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
 
-    <!-- Main Content -->
-    <main class="container my-4">
-        {% block content %}
-        {% endblock %}
-    </main>
+  <!-- ── MAIN CONTENT ── -->
+  <main class="pt-16">
+    {% block content %}{% endblock %}
+  </main>
 
-    <!-- Footer -->
-    <footer class="bg-light py-4 mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="mb-0">&copy; 2024 Ivy Opportunity Network. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-end">
-                    <a href="#" class="text-decoration-none me-3">About</a>
-                    <a href="#" class="text-decoration-none me-3">Privacy</a>
-                    <a href="#" class="text-decoration-none">Terms</a>
-                </div>
-            </div>
+  <!-- ── FOOTER ── -->
+  <footer class="bg-cream border-t border-cream-dk">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+
+        <div class="flex items-center gap-2 text-navy font-display font-semibold">
+          <i class="fas fa-graduation-cap text-gold"></i>
+          IvyNetwork
         </div>
-    </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <!-- Custom JS -->
-    <script src="{% static 'js/main.js' %}"></script>
-    {% block extra_js %}{% endblock %}
+        <p class="text-body text-sm">&copy; 2024 Ivy Opportunity Network. All rights reserved.</p>
+
+        <div class="flex items-center gap-6">
+          <a href="#" class="text-body hover:text-navy text-sm transition-colors">About</a>
+          <a href="#" class="text-body hover:text-navy text-sm transition-colors">Privacy</a>
+          <a href="#" class="text-body hover:text-navy text-sm transition-colors">Terms</a>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+
 </body>
 </html>

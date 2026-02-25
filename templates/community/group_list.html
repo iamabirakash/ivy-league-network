@@ -1,24 +1,21 @@
 {% extends 'base.html' %}
 {% block title %}Groups{% endblock %}
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h3>Domain Groups</h3>
-    <a href="{% url 'community:create_group' %}" class="btn btn-primary">Create Group</a>
-</div>
-<div class="row">
-    {% for group in groups %}
-    <div class="col-md-4 mb-3">
-        <div class="card h-100">
-            <div class="card-body">
-                <h5>{{ group.name }}</h5>
-                <p>{{ group.description|truncatechars:100 }}</p>
-                <a href="{% url 'community:group_detail' group.id %}" class="btn btn-outline-primary btn-sm">Open</a>
-            </div>
-        </div>
+<section class="max-w-6xl mx-auto px-4 py-10">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="font-display text-3xl font-bold text-navy">Domain Groups</h1>
+        <a href="{% url 'community:create_group' %}" class="bg-gold text-navy font-semibold px-4 py-2 rounded-lg hover:bg-gold-lt">Create Group</a>
     </div>
-    {% empty %}
-    <p>No groups found.</p>
-    {% endfor %}
-</div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for group in groups %}
+        <div class="bg-white border border-cream-dk rounded-xl p-5">
+            <h2 class="text-lg font-semibold text-navy mb-2">{{ group.name }}</h2>
+            <p class="text-sm text-body mb-4">{{ group.description|truncatechars:100 }}</p>
+            <a href="{% url 'community:group_detail' group.id %}" class="inline-block border border-cream-dk text-navy px-3 py-1.5 rounded-lg text-sm hover:bg-cream">Open</a>
+        </div>
+        {% empty %}
+        <p class="text-slate">No groups found.</p>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}
-

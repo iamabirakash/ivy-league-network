@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 {% block title %}Following{% endblock %}
 {% block content %}
-<h3>{{ profile_user.username }} is Following ({{ count }})</h3>
-<ul class="list-group">
-    {% for rel in following %}
-    <li class="list-group-item">
-        <a href="{% url 'accounts:user_detail' rel.following.username %}">{{ rel.following.get_full_name|default:rel.following.username }}</a>
-    </li>
-    {% empty %}
-    <li class="list-group-item">No following users.</li>
-    {% endfor %}
-</ul>
+<section class="max-w-4xl mx-auto px-4 py-10">
+    <h1 class="font-display text-3xl font-bold text-navy mb-6">{{ profile_user.username }} is Following ({{ count }})</h1>
+    <div class="bg-white border border-cream-dk rounded-xl divide-y divide-cream-dk">
+        {% for rel in following %}
+        <a class="block px-5 py-4 hover:bg-cream transition-colors" href="{% url 'accounts:user_detail' rel.following.username %}">
+            {{ rel.following.get_full_name|default:rel.following.username }}
+        </a>
+        {% empty %}
+        <div class="px-5 py-4 text-slate">No following users.</div>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}

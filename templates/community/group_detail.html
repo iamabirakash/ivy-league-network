@@ -1,23 +1,26 @@
 {% extends 'base.html' %}
 {% block title %}Group Detail{% endblock %}
 {% block content %}
-<h3>{{ group.name }}</h3>
-<p>{{ group.description }}</p>
-<p><strong>Domain:</strong> {{ group.get_domain_display }}</p>
-{% if is_member %}
-<a href="{% url 'community:leave_group' group.id %}" class="btn btn-outline-danger mb-3">Leave Group</a>
-{% else %}
-<a href="{% url 'community:join_group' group.id %}" class="btn btn-primary mb-3">Join Group</a>
-{% endif %}
-<h5>Recent Posts</h5>
-<ul class="list-group">
-    {% for post in posts %}
-    <li class="list-group-item">
-        <a href="{% url 'community:post_detail' post.id %}">{{ post.title }}</a>
-    </li>
-    {% empty %}
-    <li class="list-group-item">No posts in this group.</li>
-    {% endfor %}
-</ul>
+<section class="max-w-5xl mx-auto px-4 py-10">
+    <div class="bg-white border border-cream-dk rounded-xl p-6 mb-6">
+        <h1 class="font-display text-3xl font-bold text-navy">{{ group.name }}</h1>
+        <p class="text-body mt-3">{{ group.description }}</p>
+        <p class="text-sm text-navy mt-2"><strong>Domain:</strong> {{ group.get_domain_display }}</p>
+        <div class="mt-4">
+            {% if is_member %}
+            <a href="{% url 'community:leave_group' group.id %}" class="border border-red-300 text-red-600 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-50">Leave Group</a>
+            {% else %}
+            <a href="{% url 'community:join_group' group.id %}" class="bg-gold text-navy px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gold-lt">Join Group</a>
+            {% endif %}
+        </div>
+    </div>
+    <h2 class="font-display text-xl font-semibold text-navy mb-3">Recent Posts</h2>
+    <div class="bg-white border border-cream-dk rounded-xl divide-y divide-cream-dk">
+        {% for post in posts %}
+        <a class="block px-5 py-4 hover:bg-cream transition-colors text-sm text-navy" href="{% url 'community:post_detail' post.id %}">{{ post.title }}</a>
+        {% empty %}
+        <div class="px-5 py-4 text-slate">No posts in this group.</div>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}
-

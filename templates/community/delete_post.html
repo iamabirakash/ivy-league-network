@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}Delete Post{% endblock %}
 {% block content %}
-<h3>Delete Post</h3>
-<p>Are you sure you want to delete: <strong>{{ post.title }}</strong>?</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a href="{% url 'community:post_detail' post.id %}" class="btn btn-secondary">Cancel</a>
-</form>
+<section class="max-w-2xl mx-auto px-4 py-12">
+    <div class="bg-white border border-cream-dk rounded-xl p-6">
+        <h1 class="font-display text-2xl font-bold text-navy mb-2">Delete Post</h1>
+        <p class="text-slate mb-6">Are you sure you want to delete: <strong>{{ post.title }}</strong>?</p>
+        <form method="post" class="flex items-center gap-3">
+            {% csrf_token %}
+            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg">Delete</button>
+            <a href="{% url 'community:post_detail' post.id %}" class="border border-cream-dk text-navy px-4 py-2 rounded-lg hover:bg-cream">Cancel</a>
+        </form>
+    </div>
+</section>
 {% endblock %}
-
