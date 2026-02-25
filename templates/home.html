@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Ivy Opportunity Network{% endblock %}
+
+{% block content %}
+<div class="row align-items-center min-vh-75">
+    <div class="col-lg-6">
+        <h1 class="display-4 fw-bold mb-4">
+            Discover Ivy League <span class="text-primary">Opportunities</span>
+        </h1>
+        <p class="lead mb-4">
+            Never miss a workshop, hackathon, research internship, or scholarship from top universities.
+            Personalized opportunities, automated applications, and a thriving academic community.
+        </p>
+        
+        {% if not user.is_authenticated %}
+            <div class="d-grid gap-2 d-md-flex">
+                <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg px-4">
+                    Get Started Free
+                </a>
+                <a href="{% url 'opportunities:list' %}" class="btn btn-outline-primary btn-lg px-4">
+                    Browse Opportunities
+                </a>
+            </div>
+        {% else %}
+            <div class="d-grid gap-2 d-md-flex">
+                <a href="{% url 'opportunities:dashboard' %}" class="btn btn-primary btn-lg px-4">
+                    Go to Dashboard
+                </a>
+                <a href="{% url 'opportunities:list' %}" class="btn btn-outline-primary btn-lg px-4">
+                    Browse Opportunities
+                </a>
+            </div>
+        {% endif %}
+        
+        <div class="row mt-5">
+            <div class="col-4">
+                <div class="text-center">
+                    <h3 class="text-primary">8+</h3>
+                    <p class="text-muted">Ivy League Universities</p>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="text-center">
+                    <h3 class="text-primary">1000+</h3>
+                    <p class="text-muted">Opportunities</p>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="text-center">
+                    <h3 class="text-primary">500+</h3>
+                    <p class="text-muted">Active Students</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <img src="{% static 'images/hero.svg' %}" alt="Hero" class="img-fluid">
+    </div>
+</div>
+
+<!-- Features -->
+<div class="row mt-5 pt-5">
+    <h2 class="text-center mb-5">Why Choose IvyNetwork?</h2>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-robot fa-3x text-primary mb-3"></i>
+                <h5>AI-Powered Discovery</h5>
+                <p class="text-muted">Our AI monitors 8+ Ivy League websites in real-time, finding opportunities matching your interests.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-rocket fa-3x text-primary mb-3"></i>
+                <h5>Auto-Application</h5>
+                <p class="text-muted">Apply with one click. Our system auto-fills forms and submits your applications.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-trophy fa-3x text-primary mb-3"></i>
+                <h5>InCoScore Ranking</h5>
+                <p class="text-muted">Get ranked against peers with our intelligent competency scoring algorithm.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works -->
+<div class="row mt-5 pt-5">
+    <h2 class="text-center mb-5">How It Works</h2>
+    
+    <div class="col-md-3">
+        <div class="text-center">
+            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                 style="width: 50px; height: 50px;">1</div>
+            <h5>Create Profile</h5>
+            <p class="text-muted">Add your skills, interests, and achievements</p>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="text-center">
+            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                 style="width: 50px; height: 50px;">2</div>
+            <h5>Get Matched</h5>
+            <p class="text-muted">Receive personalized opportunity recommendations</p>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="text-center">
+            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                 style="width: 50px; height: 50px;">3</div>
+            <h5>Apply Automatically</h5>
+            <p class="text-muted">Apply with one click to multiple opportunities</p>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="text-center">
+            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                 style="width: 50px; height: 50px;">4</div>
+            <h5>Connect & Grow</h5>
+            <p class="text-muted">Join community, share achievements, climb rankings</p>
+        </div>
+    </div>
+</div>
+
+<!-- CTA -->
+<div class="row mt-5 pt-5">
+    <div class="col-12">
+        <div class="bg-primary text-white rounded-4 p-5 text-center">
+            <h3 class="mb-4">Ready to accelerate your academic journey?</h3>
+            <p class="lead mb-4">Join hundreds of students already discovering opportunities.</p>
+            <a href="{% url 'accounts:register' %}" class="btn btn-light btn-lg">Sign Up Now →</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

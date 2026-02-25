@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Community{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Community Posts</h3>
+    <a href="{% url 'community:create_post' %}" class="btn btn-primary">New Post</a>
+</div>
+<form method="get" class="mb-3">
+    <input name="search" class="form-control" value="{{ request.GET.search }}" placeholder="Search posts">
+</form>
+<div class="list-group">
+    {% for post in posts %}
+    <a href="{% url 'community:post_detail' post.id %}" class="list-group-item list-group-item-action">
+        <h6 class="mb-1">{{ post.title }}</h6>
+        <small class="text-muted">By {{ post.user.username }} | {{ post.created_at|date:"M d, Y" }}</small>
+    </a>
+    {% empty %}
+    <div class="list-group-item">No posts found.</div>
+    {% endfor %}
+</div>
+{% endblock %}
+

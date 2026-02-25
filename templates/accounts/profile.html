@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>{{ user.get_full_name|default:user.username }}</h2>
+    <a href="{% url 'accounts:edit_profile' %}" class="btn btn-outline-primary">Edit Profile</a>
+</div>
+<p class="text-muted">{{ user.university }} | {{ user.major }}</p>
+<p>{{ user.bio }}</p>
+<div class="mb-3">
+    <strong>InCoScore:</strong> {{ user.incoscore }}
+</div>
+<div class="mb-3">
+    <a href="{% url 'accounts:add_achievement' %}" class="btn btn-primary">Add Achievement</a>
+</div>
+<h4>Achievements</h4>
+<ul class="list-group">
+    {% for item in achievements %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span>{{ item.title }} ({{ item.get_achievement_type_display }})</span>
+        <a href="{% url 'accounts:delete_achievement' item.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+    </li>
+    {% empty %}
+    <li class="list-group-item">No achievements yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+

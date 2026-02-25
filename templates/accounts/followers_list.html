@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Followers{% endblock %}
+{% block content %}
+<h3>{{ profile_user.username }}'s Followers ({{ count }})</h3>
+<ul class="list-group">
+    {% for rel in followers %}
+    <li class="list-group-item">
+        <a href="{% url 'accounts:user_detail' rel.follower.username %}">{{ rel.follower.get_full_name|default:rel.follower.username }}</a>
+    </li>
+    {% empty %}
+    <li class="list-group-item">No followers.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+

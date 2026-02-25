@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}My Rank{% endblock %}
+{% block content %}
+<h3>My Rank</h3>
+<div class="card">
+    <div class="card-body">
+        <p><strong>Current Rank:</strong> {{ rank }}</p>
+        <p><strong>Total Users:</strong> {{ total_users }}</p>
+        <p><strong>Percentile:</strong> {{ percentile }}%</p>
+    </div>
+</div>
+{% endblock %}

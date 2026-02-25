@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Post Detail{% endblock %}
+{% block content %}
+<h3>{{ post.title }}</h3>
+<p class="text-muted">By {{ post.user.username }} | Views {{ post.views }}</p>
+<p>{{ post.content }}</p>
+<div class="mb-3">
+    <a href="{% url 'community:like_post' post.id %}" class="btn btn-outline-primary btn-sm">Like ({{ post.likes.count }})</a>
+    {% if post.user == user %}
+    <a href="{% url 'community:edit_post' post.id %}" class="btn btn-outline-secondary btn-sm">Edit</a>
+    <a href="{% url 'community:delete_post' post.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+    {% endif %}
+</div>
+<h5>Comments</h5>
+<ul class="list-group mb-3">
+    {% for comment in comments %}
+    <li class="list-group-item">
+        <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
+    </li>
+    {% empty %}
+    <li class="list-group-item">No comments yet.</li>
+    {% endfor %}
+</ul>
+<form method="post" action="{% url 'community:add_comment' post.id %}">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit" class="btn btn-primary">Comment</button>
+</form>
+{% endblock %}
+

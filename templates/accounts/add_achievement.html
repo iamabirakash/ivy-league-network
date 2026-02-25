@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Add Achievement{% endblock %}
+{% block content %}
+<h3 class="mb-3">Add Achievement</h3>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+{% endblock %}
+

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Opportunity Detail{% endblock %}
+{% block content %}
+<h2>{{ opportunity.title }}</h2>
+<p class="text-muted">{{ opportunity.university.name }} | {{ opportunity.get_opportunity_type_display }}</p>
+<p><strong>Domain:</strong> {{ opportunity.get_domain_display|default:opportunity.domain }}</p>
+<p><strong>Deadline:</strong> {{ opportunity.deadline|date:"M d, Y H:i" }}</p>
+<p>{{ opportunity.description }}</p>
+<div class="mb-3">
+    <a href="{{ opportunity.external_url }}" target="_blank" class="btn btn-primary">Open Source Link</a>
+    <a href="{% url 'opportunities:save' opportunity.id %}" class="btn btn-outline-secondary">Save</a>
+</div>
+{% if similar %}
+<h4>Similar Opportunities</h4>
+<ul class="list-group">
+    {% for item in similar %}
+    <li class="list-group-item">
+        <a href="{% url 'opportunities:detail' item.id %}">{{ item.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
+

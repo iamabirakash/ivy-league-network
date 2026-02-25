@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Group Detail{% endblock %}
+{% block content %}
+<h3>{{ group.name }}</h3>
+<p>{{ group.description }}</p>
+<p><strong>Domain:</strong> {{ group.get_domain_display }}</p>
+{% if is_member %}
+<a href="{% url 'community:leave_group' group.id %}" class="btn btn-outline-danger mb-3">Leave Group</a>
+{% else %}
+<a href="{% url 'community:join_group' group.id %}" class="btn btn-primary mb-3">Join Group</a>
+{% endif %}
+<h5>Recent Posts</h5>
+<ul class="list-group">
+    {% for post in posts %}
+    <li class="list-group-item">
+        <a href="{% url 'community:post_detail' post.id %}">{{ post.title }}</a>
+    </li>
+    {% empty %}
+    <li class="list-group-item">No posts in this group.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
+

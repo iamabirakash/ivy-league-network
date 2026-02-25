@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Opportunities{% endblock %}
+{% block content %}
+<h3 class="mb-3">Opportunities</h3>
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input type="text" name="search" value="{{ request.GET.search }}" class="form-control" placeholder="Search">
+    </div>
+    <div class="col-md-3">
+        <select name="domain" class="form-select">
+            <option value="">All Domains</option>
+            {% for value, label in domains %}
+            <option value="{{ value }}" {% if request.GET.domain == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-3">
+        <select name="type" class="form-select">
+            <option value="">All Types</option>
+            {% for value, label in opportunity_types %}
+            <option value="{{ value }}" {% if request.GET.type == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100" type="submit">Filter</button>
+    </div>
+</form>
+<div class="list-group">
+    {% for opportunity in opportunities %}
+    <a class="list-group-item list-group-item-action" href="{% url 'opportunities:detail' opportunity.id %}">
+        <div class="d-flex justify-content-between">
+            <div>
+                <h6 class="mb-1">{{ opportunity.title }}</h6>
+                <small class="text-muted">{{ opportunity.university.name }} | {{ opportunity.get_opportunity_type_display }}</small>
+            </div>
+            <small class="text-muted">Deadline {{ opportunity.deadline|date:"M d, Y" }}</small>
+        </div>
+    </a>
+    {% empty %}
+    <div class="list-group-item">No opportunities found.</div>
+    {% endfor %}
+</div>
+{% endblock %}
+
